@@ -112,7 +112,7 @@ def request_payment_link(order_id, total_amount, user_id):
         "total_amount": total_amount
     }
 
-    payement_post_url = 'http://krakend:8080/payments-api/payments'
+    payement_post_url = 'http://api-gateway:8080/payments-api/payments'
     logger.debug(f"Commencer : POST {payement_post_url}")
     response_from_payment_service = requests.post(
         payement_post_url,
@@ -124,6 +124,7 @@ def request_payment_link(order_id, total_amount, user_id):
         response_from_payment_service.status_code,
         response_from_payment_service.json() if response_from_payment_service.headers.get("Content-Type") == "application/json" else response_from_payment_service.text
     )
+    
     if response_from_payment_service.status_code == 201:
         payment_id = response.get_json()['payment_id']
         logger.debug(f"ID paiement: {payment_id}")
